@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "rge",
+  "version": "${version}",
+  "name": "Raven's Gameplay Enhancements",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/rge/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.guhcat.raven.rge.client.RgeClient"
+    ],
+    "main": [
+      "com.guhcat.raven.rge.Rge"
+    ]
+  },
+  "mixins": [
+    "rge.mixins.json",
+    {
+      "config": "rge.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

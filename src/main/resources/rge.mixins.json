@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.guhcat.raven.rge.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "anvil"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
