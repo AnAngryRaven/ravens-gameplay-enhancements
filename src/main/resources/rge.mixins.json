@@ -4,7 +4,8 @@
   "package": "com.guhcat.raven.rge.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "anvil"
+    "anvil",
+    "FlashOxidise"
   ],
   "injectors": {
     "defaultRequire": 1
