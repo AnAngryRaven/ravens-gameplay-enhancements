@@ -26,8 +26,8 @@ body:
         1. Craft ...
         2. Use ...
         3. Expected ... got ...
-      validations:
-        required: true
+    validations:
+      required: true
   - type: input
     id: logfile
     attributes:
