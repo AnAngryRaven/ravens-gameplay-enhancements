@@ -20,11 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 
 @Mixin(LightningEntity.class)
-public abstract class FlashOxidise extends Entity {
-
-    public FlashOxidise(EntityType<?> type, World world) {
-        super(type, world);
-    }
+public abstract class FlashOxidise {
 
     @Inject(method = "cleanOxidation", at = @At("HEAD"))
     private static void galvanicCorrosion(World world, BlockPos pos, CallbackInfo ci){
