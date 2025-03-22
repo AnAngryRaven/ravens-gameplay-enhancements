@@ -1,0 +1,39 @@
+name: Bug Report
+description: File a bug report
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill out the form below to submit your bug report.
+        **PLEASE DO NOT USE THIS FORM TO SUBMIT FEATURE REQUESTS!!!**
+  - type: input
+    id: version
+    attributes:
+      label: Game Version
+      description: What version of Minecraft are you running?
+      placeholder: 1.21.4
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce-text
+    attributes:
+      label: Steps and Expected Behaviour
+      description: |
+        The steps to reproduce the issue, and what was expected to happen in its place.
+      placeholder: |
+        1. Craft ...
+        2. Use ...
+        3. Expected ... got ...
+      validation:
+        required: true
+  - type: input
+    id: logfile
+    attributes:
+      label: Log File
+      description: |
+        If you have it, provide a log file from when the issue occurred.
+        You can use GitHub's Gist tool [here](https://gist.github.com/) and post the link to it in this field.
+    validations:
+        required: false

@@ -1,0 +1,34 @@
+name: Feature Change
+description: Submit a feature change
+labels: ["feature change"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Submit a suggestion for how an existing feature should be modified.
+  - type: input
+    id: feature-name
+    attributes:
+      label: Feature Name
+      description: |
+        The name of the feature to be modified.
+        If you're not sure what the feature is named, check on the [Wiki](https://github.com/AnAngryRaven/ravens-gameplay-enhancements/wiki) for the exact name of the feature.
+    validation:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Modification Rationale
+      description: |
+        Provide a rationale for why the feature should be modified.
+        It needn't be complicated -- just describe why you think this feature should be modified!
+    validation:
+        required: true
+  - type: textarea
+    id: feature-explanation
+    attributes:
+       label: Feature Explanation
+       description: |
+         Provide a description of what the feature you're suggesting does.
+    validation:
+      required: true

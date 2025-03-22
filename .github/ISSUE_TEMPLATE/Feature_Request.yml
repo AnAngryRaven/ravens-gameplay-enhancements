@@ -1,0 +1,25 @@
+name: Feature Request
+description: Submit a feature request
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Submit a suggestions for a new feature.
+  - type: textarea
+    id: reason
+    attributes:
+      label: Feature Rationale
+      description: |
+        Provide a rationale for the feature you're suggesting.
+        It needn't be complicated -- just describe why you think this feature should be implemented!
+    validation:
+        required: true
+  - type: textarea
+    id: feature-explanation
+    attributes:
+       label: Feature Explanation
+       description: |
+         Provide a description of what the feature you're suggesting does.
+    validation:
+      required: true
