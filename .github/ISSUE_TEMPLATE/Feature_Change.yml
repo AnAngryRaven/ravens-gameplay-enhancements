@@ -13,7 +13,7 @@ body:
       description: |
         The name of the feature to be modified.
         If you're not sure what the feature is named, check on the [Wiki](https://github.com/AnAngryRaven/ravens-gameplay-enhancements/wiki) for the exact name of the feature.
-    validation:
+    validations:
       required: true
   - type: textarea
     id: reason
@@ -22,7 +22,7 @@ body:
       description: |
         Provide a rationale for why the feature should be modified.
         It needn't be complicated -- just describe why you think this feature should be modified!
-    validation:
+    validations:
         required: true
   - type: textarea
     id: feature-explanation
@@ -30,5 +30,5 @@ body:
        label: Feature Explanation
        description: |
          Provide a description of what the feature you're suggesting does.
-    validation:
+    validations:
       required: true
