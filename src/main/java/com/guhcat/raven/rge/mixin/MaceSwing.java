@@ -1,5 +1,6 @@
 package com.guhcat.raven.rge.mixin;
 
+import com.guhcat.raven.rge.EnchantmentList;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
@@ -14,6 +15,8 @@ import net.minecraft.item.MaceItem;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,15 +36,20 @@ public abstract class MaceSwing extends LivingEntity {
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;sidedDamage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void SwingInject(Entity target, CallbackInfo ci, float f, ItemStack itemStack, DamageSource damageSource, float g, float h){
-        if(itemStack.isOf(Items.MACE) && !MaceItem.shouldDealAdditionalDamage(this) && this.getWorld() instanceof ServerWorld serverWorld){
+        if(itemStack.isOf(Items.MACE) && !MaceItem.shouldDealAdditionalDamage(this)){
             World world = this.getWorld();
             int densityEnchantLevel = EnchantmentHelper.getLevel(world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.DENSITY), itemStack);
-            float damageDealt = (float)((densityEnchantLevel*0.5F) + ((this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE) / 2) * h));
-            List<? extends Entity> entitiesAround = world.getEntitiesByClass(LivingEntity.class, new Box(target.getX(), target.getY(), target.getZ() - 1, target.getX()+1.5, target.getY()+1, target.getZ() + 1.5), EntityPredicates.CAN_HIT);
+            int lightweightEnchantLevel = EnchantmentHelper.getLevel(world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(EnchantmentList.LIGHTWEIGHT_KEY), itemStack);
+            float damageDealt = ((densityEnchantLevel*0.5F) + ((f / 2) * h));
 
-            for (Entity e : entitiesAround) {
-                if(e != this && e != target)
-                    e.damage(serverWorld, damageSource, damageDealt);
+            List<? extends Entity> entitiesAround = world.getEntitiesByClass(LivingEntity.class, new Box(target.getX() - (1 + (lightweightEnchantLevel * 0.25)), target.getY(), target.getZ() - (1 + (lightweightEnchantLevel * 0.25)), target.getX()+(1 + (lightweightEnchantLevel * 0.25)), target.getY()+1, target.getZ() + (1 + (lightweightEnchantLevel * 0.25))), EntityPredicates.CAN_HIT);
+            //world.playSound(null, this.getBlockPos(), //todo!("create custom sound effect similar to sweeping edge"), SoundCategory.PLAYERS, 1.0F, 1.0F);
+
+            if(this.getWorld() instanceof ServerWorld serverWorld) {
+                for (Entity e : entitiesAround) {
+                    if (e != this && e != target)
+                        e.damage(serverWorld, damageSource, damageDealt);
+                }
             }
         }
     }
