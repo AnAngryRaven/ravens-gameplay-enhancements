@@ -48,5 +48,7 @@ public class Rge implements ModInitializer {
                     Registries.POTION.getEntry(STRONG_CHORAL)
             );
         });
+
+        EnchantmentList.initialize();
     }
 }
