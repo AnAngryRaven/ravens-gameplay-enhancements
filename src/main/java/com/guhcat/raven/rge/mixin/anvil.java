@@ -1,8 +1,6 @@
 package com.guhcat.raven.rge.mixin;
 
 
-//guh
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
