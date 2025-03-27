@@ -1,5 +1,5 @@
 # Raven's Gameplay Enhancements
-## LTS Version - 1.20.4
+## LTS Version - Undetermined
 
 Raven's Gameplay Enhancements is an assortment of vanilla-like enhancements and modifications to make the game more interesting.
 
