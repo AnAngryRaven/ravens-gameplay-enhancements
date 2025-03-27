@@ -51,15 +51,15 @@ public abstract class MaceSwing extends LivingEntity {
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;sidedDamage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void SwingInject(Entity target, CallbackInfo ci, float f, ItemStack itemStack, DamageSource damageSource, float g, float h){
-        if(itemStack.isOf(Items.MACE) && !MaceItem.shouldDealAdditionalDamage(this)){
+        if(itemStack.isOf(Items.MACE) && !MaceItem.shouldDealAdditionalDamage(this) && this.getWorld() instanceof ServerWorld serverWorld){
             World world = this.getWorld();
-            float damageDealt = (float)((EnchantmentHelper.getLevel(world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.DENSITY), itemStack)*0.5F) + ((this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE) / 2) * h));
+            int densityEnchantLevel = EnchantmentHelper.getLevel(world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.DENSITY), itemStack);
+            float damageDealt = (float)((densityEnchantLevel*0.5F) + ((this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE) / 2) * h));
             List<? extends Entity> entitiesAround = world.getEntitiesByClass(LivingEntity.class, new Box(target.getX(), target.getY(), target.getZ() - 1, target.getX()+1.5, target.getY()+1, target.getZ() + 1.5), EntityPredicates.CAN_HIT);
 
-            if(this.getWorld() instanceof ServerWorld serverWorld) {
-                for (Entity e : entitiesAround) {
+            for (Entity e : entitiesAround) {
+                if(e != this && e != target)
                     e.damage(serverWorld, damageSource, damageDealt);
-                }
             }
         }
     }
