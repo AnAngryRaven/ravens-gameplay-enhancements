@@ -6,7 +6,8 @@
   "mixins": [
     "anvil",
     "FlashOxidise",
-    "MaceSwing"
+    "MaceSwing",
+    "RemoveMendingTrade"
   ],
   "injectors": {
     "defaultRequire": 1
