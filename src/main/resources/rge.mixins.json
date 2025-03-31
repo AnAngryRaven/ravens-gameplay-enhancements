@@ -7,7 +7,8 @@
     "anvil",
     "FlashOxidise",
     "MaceSwing",
-    "RemoveMendingTrade"
+    "RemoveMendingTrade",
+    "TorchflowerLuminance"
   ],
   "injectors": {
     "defaultRequire": 1
