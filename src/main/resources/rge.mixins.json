@@ -8,7 +8,8 @@
     "FlashOxidise",
     "MaceSwing",
     "RemoveMendingTrade",
-    "TorchflowerLuminance"
+    "TorchflowerLuminance",
+    "BundleUtilities"
   ],
   "injectors": {
     "defaultRequire": 1
