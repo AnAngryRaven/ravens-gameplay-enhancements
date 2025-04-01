@@ -30,17 +30,16 @@ public abstract class FlashOxidise {
                     boolean cont = true;
 
                     while(cont && world.random.nextInt(10) > 4){
-                        if(world.getDifficulty().equals(Difficulty.HARD)) {
-                            world.removeBlock(loc, false);
-                            world.getBlockState(loc).getBlock();
-                            world.playSound(null, loc, SoundEvents.BLOCK_COPPER_BULB_BREAK, SoundCategory.BLOCKS, 25.0F, 1.0F);
-                            break;
-                        }
-                        else
-                            cont = nextOxidisableBlock.isPresent();
+                        cont = nextOxidisableBlock.isPresent();
 
                         nextOxidisableBlock.ifPresent(block -> world.setBlockState(loc, block.getDefaultState()));
                         world.syncWorldEvent(WorldEvents.ELECTRICITY_SPARKS, loc, -1);
+                    }
+
+                    if(world.getDifficulty().equals(Difficulty.HARD) && !cont) {
+                        world.removeBlock(loc, false);
+                        world.getBlockState(loc).getBlock();
+                        world.playSound(null, loc, SoundEvents.BLOCK_COPPER_BULB_BREAK, SoundCategory.BLOCKS, 25.0F, 1.0F);
                     }
                 }
             }
