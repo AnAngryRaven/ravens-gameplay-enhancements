@@ -10,7 +10,8 @@
     "RemoveMendingTrade",
     "TorchflowerLuminance",
     "BundleUtilities",
-    "RemoveMendingLoot"
+    "RemoveMendingLoot",
+    "EnchantingTableInfluencing"
   ],
   "injectors": {
     "defaultRequire": 1
