@@ -9,7 +9,8 @@
     "MaceSwing",
     "RemoveMendingTrade",
     "TorchflowerLuminance",
-    "BundleUtilities"
+    "BundleUtilities",
+    "RemoveMendingLoot"
   ],
   "injectors": {
     "defaultRequire": 1
