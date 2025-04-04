@@ -49,7 +49,7 @@ public abstract class EnchantingTableInfluencing extends ScreenHandler implement
             for(int slotIndex = 0; slotIndex < ChiseledBookshelfBlockEntity.MAX_BOOKS; slotIndex++){
                 ItemStack bookStack = blockEntity.getStack(slotIndex);
 
-                if(bookStack.isOf(Items.ENCHANTED_BOOK))
+                if(!bookStack.isOf(Items.ENCHANTED_BOOK))
                     continue;
 
                 for (RegistryEntry<Enchantment> e : bookStack.getComponents().get(DataComponentTypes.STORED_ENCHANTMENTS).getEnchantments()) {
