@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.screen.EnchantmentScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -53,7 +54,7 @@ public abstract class EnchantingTableInfluencing extends ScreenHandler implement
         enchantmentInfluence.clear();
         double chiselPower = 0;
 
-        //Yes, this looks terrible. I know. I'm very tired right now and could use a break, so I'm afraid you're just going to have to deal with it.
+        //Not sure what I can really do about this I fear :/
         for(BlockPos blockPos : EnchantingTableBlock.POWER_PROVIDER_OFFSETS){
             if(world.getBlockState(pos.add(blockPos.getX(), blockPos.getY(), blockPos.getZ())).getBlock() != Blocks.CHISELED_BOOKSHELF)
                 continue;
@@ -68,14 +69,14 @@ public abstract class EnchantingTableInfluencing extends ScreenHandler implement
                     continue;
 
                 for (RegistryEntry<Enchantment> e : bookStack.getComponents().get(DataComponentTypes.STORED_ENCHANTMENTS).getEnchantments()) {
+                    if(e.isIn(EnchantmentTags.TREASURE) || (!e.value().isPrimaryItem(itemStack) && !itemStack.isOf(Items.BOOK)))
+                        continue;
 
-                    //todo!(); Change weighting for this. Seems the weights influence things a little too easily
-                    // - Or maybe the implementation for helperFunction is effed, idk. that's a later me problem tho
-                    int influenceNumber = Math.min(enchantmentInfluence.getOrDefault(e, 0) + bookStack.getComponents().get(DataComponentTypes.STORED_ENCHANTMENTS).getLevel(e), 20);
-                    enchantmentInfluence.put(e, influenceNumber);
+                    enchantmentInfluence.put(e, enchantmentInfluence.getOrDefault(e, 0) + bookStack.getComponents().get(DataComponentTypes.STORED_ENCHANTMENTS).getLevel(e));
                 }
             }
         }
+        enchantmentInfluence.forEach((enchant, number) -> enchantmentInfluence.put(enchant, Math.min((int)(5*Math.log10(number) + 0.2), 10)));
         ix.set(ix.get() + (int) chiselPower);
     }
 
@@ -91,8 +92,8 @@ public abstract class EnchantingTableInfluencing extends ScreenHandler implement
     }
 
     /**
-     * If there are enchantments to influence, then generate a random list and add the influenced enchantments
-     *
+     * If there are enchantments to influence, then combine all possible enchantments for the item with
+     * influenced enchantments, and generate enchantments for the item.
      * Note that this function only really exists to prevent duplicate code; For whatever reason, the
      * vanilla implementation appears to have duplicated code for generating the enchantments and then
      * actually applying them.
@@ -102,18 +103,26 @@ public abstract class EnchantingTableInfluencing extends ScreenHandler implement
      * @param slot Enchanting table enchantment slot
      * @param level Level of the enchantment
      * @param original Original operation
-     * @return
+     * @return List of influenced enchantments
      */
     @Unique
     public List<EnchantmentLevelEntry> helperFunction(EnchantmentScreenHandler instance, DynamicRegistryManager registryManager, ItemStack stack, int slot, int level, Operation<List<EnchantmentLevelEntry>> original) {
         if(enchantmentInfluence.isEmpty())
             return original.call(instance, registryManager, stack, slot, level);
 
-        ArrayList<RegistryEntry<Enchantment>> tempList = new ArrayList<>(enchantmentInfluence.keySet().stream().toList());
-        original.call(instance, registryManager, stack, slot, level).forEach(e -> {
-            tempList.add(e.enchantment());
-        });
+        ArrayList<RegistryEntry<Enchantment>> tempList = new ArrayList<>();
+        List<EnchantmentLevelEntry> returnList;
 
-        return EnchantmentHelper.generateEnchantments(random, stack, level, tempList.stream());
+        enchantmentInfluence.forEach((enchant, number) -> {
+            for(int i = 0; i < number; i++){
+                tempList.add(enchant);
+            }
+        });
+        original.call(instance, registryManager, stack, slot, level).forEach(e -> tempList.add(e.enchantment()));
+
+        if((returnList = EnchantmentHelper.generateEnchantments(random, stack, level, tempList.stream())).size() > 1 && stack.isOf(Items.BOOK))
+            returnList.remove(this.random.nextInt(returnList.size()));
+
+        return returnList;
     }
 }
