@@ -4,7 +4,7 @@
   "package": "com.guhcat.raven.rge.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "anvil",
+    "AnvilRepairRename",
     "FlashOxidise",
     "MaceSwing",
     "RemoveMendingTrade",
