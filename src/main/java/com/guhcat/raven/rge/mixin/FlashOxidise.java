@@ -3,8 +3,6 @@ package com.guhcat.raven.rge.mixin;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Oxidizable;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -32,17 +30,16 @@ public abstract class FlashOxidise {
                     boolean cont = true;
 
                     while(cont && world.random.nextInt(10) > 4){
-                        if(world.getDifficulty().equals(Difficulty.HARD)) {
-                            world.removeBlock(loc, false);
-                            world.getBlockState(loc).getBlock();
-                            world.playSound(null, loc, SoundEvents.BLOCK_COPPER_BULB_BREAK, SoundCategory.BLOCKS, 25.0F, 1.0F);
-                            break;
-                        }
-                        else
-                            cont = nextOxidisableBlock.isPresent();
+                        cont = nextOxidisableBlock.isPresent();
 
                         nextOxidisableBlock.ifPresent(block -> world.setBlockState(loc, block.getDefaultState()));
                         world.syncWorldEvent(WorldEvents.ELECTRICITY_SPARKS, loc, -1);
+                    }
+
+                    if(world.getDifficulty().equals(Difficulty.HARD) && !cont) {
+                        world.removeBlock(loc, false);
+                        world.getBlockState(loc).getBlock();
+                        world.playSound(null, loc, SoundEvents.BLOCK_COPPER_BULB_BREAK, SoundCategory.BLOCKS, 25.0F, 1.0F);
                     }
                 }
             }

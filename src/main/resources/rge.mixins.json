@@ -4,9 +4,14 @@
   "package": "com.guhcat.raven.rge.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "anvil",
+    "AnvilRepairRename",
     "FlashOxidise",
-    "MaceSwing"
+    "MaceSwing",
+    "RemoveMendingTrade",
+    "TorchflowerLuminance",
+    "BundleUtilities",
+    "RemoveMendingLoot",
+    "EnchantingTableInfluencing"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -15,7 +15,8 @@
     ],
     "main": [
       "com.guhcat.raven.rge.Rge"
-    ]
+    ],
+    "fabric-datagen": ["com.guhcat.raven.rge.client.datagen.RgeDatagen"]
   },
   "mixins": [
     "rge.mixins.json",
