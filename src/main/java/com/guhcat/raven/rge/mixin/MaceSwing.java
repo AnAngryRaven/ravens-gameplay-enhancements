@@ -6,7 +6,6 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -20,6 +19,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -29,6 +29,8 @@ import java.util.List;
 
 @Mixin(PlayerEntity.class)
 public abstract class MaceSwing extends LivingEntity {
+
+    @Shadow public abstract void spawnSweepAttackParticles();
 
     protected MaceSwing(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -43,9 +45,10 @@ public abstract class MaceSwing extends LivingEntity {
             float damageDealt = ((densityEnchantLevel*0.5F) + ((f / 2) * h));
 
             List<? extends Entity> entitiesAround = world.getEntitiesByClass(LivingEntity.class, new Box(target.getX() - (1 + (lightweightEnchantLevel * 0.25)), target.getY(), target.getZ() - (1 + (lightweightEnchantLevel * 0.25)), target.getX()+(1 + (lightweightEnchantLevel * 0.25)), target.getY()+1, target.getZ() + (1 + (lightweightEnchantLevel * 0.25))), EntityPredicates.CAN_HIT);
-            //world.playSound(null, this.getBlockPos(), //todo!("create custom sound effect similar to sweeping edge"), SoundCategory.PLAYERS, 1.0F, 1.0F);
 
             if(this.getWorld() instanceof ServerWorld serverWorld) {
+                world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1.0F, 0.1F);
+                this.spawnSweepAttackParticles();
                 for (Entity e : entitiesAround) {
                     if (e != this && e != target)
                         e.damage(serverWorld, damageSource, damageDealt);
